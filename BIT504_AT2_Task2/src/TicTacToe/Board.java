@@ -1,6 +1,7 @@
 package TicTacToe;
 import java.awt.*;
 
+
 public class Board {
 	// grid line width
 	public static final int GRID_WIDTH = 8;
@@ -26,7 +27,7 @@ public class Board {
 
 	 /** Return true if it is a draw (i.e., no more EMPTY cells) */ 
 	public boolean isDraw() {
-		 
+		
 		// Check whether the game has ended in a draw.
 		for (int row = 0; row < GameMain.ROWS; ++row) {
 			 	for (int col = 0; col < GameMain.COLS; ++col) {	
@@ -36,9 +37,7 @@ public class Board {
 			 	}	
 		 }
 		 return true;	//no more empty cells = True
-
-		
-	}
+}
 	
 	/** Return true if the current player "thePlayer" has won after making their move  */
 	public boolean hasWon(Player thePlayer, int playerRow, int playerCol) {
@@ -50,7 +49,7 @@ public class Board {
 		
 		if( cells[0][0].content == thePlayer && cells[1][1].content == thePlayer && cells[2][2].content == thePlayer)  // 3-in-the-diagonal
 				return true;
-		if( cells[2][2].content == thePlayer && cells[1][1].content == thePlayer && cells[0][0].content == thePlayer) // 3 in the opposite diagonal
+		if( cells[0][2].content == thePlayer && cells[1][1].content == thePlayer && cells[2][0].content == thePlayer) // 3 in the opposite diagonal
 				return true;	
 		//no winner, keep playing
 		return false;
@@ -78,7 +77,7 @@ public class Board {
 		//Draw the cells
 		for (int row = 0; row < GameMain.ROWS; ++row) {          
 			for (int col = 0; col < GameMain.COLS; ++col) {  
-				cells[row][col].paint(g);
+				cells[row][col].paint(g);//paint(g) in Cell class
 			}
 		}
 	}

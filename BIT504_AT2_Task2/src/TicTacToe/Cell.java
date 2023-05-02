@@ -6,6 +6,7 @@ package TicTacToe;
 	import java.awt.Graphics;
 	import java.awt.Graphics2D;
 
+
 	public class Cell {
 	    //content of this cell (empty, cross, nought)
 		Player content;
@@ -18,9 +19,9 @@ package TicTacToe;
 			this.row = row;
 			this.col = col;
 			
-		//	clear();
+			clear();
 			
-			//TODO: call the method that sets the cell content to EMPTY
+			
 			 
 		}
 		
@@ -48,9 +49,7 @@ package TicTacToe;
 		
 		/** Set this cell's content to EMPTY */
 		public void clear() {
-			
-			// TODO: Set the value of content to Empty (Remember this is an enum)
-
+			content = Player.Empty;
 			
 		}
 			
