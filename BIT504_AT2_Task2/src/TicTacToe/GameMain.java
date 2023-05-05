@@ -4,7 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+//abstract window toolkit, prior to Swing
 
+//Swing uses Model-View-Controller(MVC) architecture
+//Have made adjustments to import java.awt.*, import java.swing* to specific classes needed in these packages.
+//Doing this will decrease the compile time and readability of the program and it will be clear which classes have been used
 
 public class GameMain extends JPanel implements MouseListener{
 	//Constants for game 
@@ -27,9 +31,7 @@ public class GameMain extends JPanel implements MouseListener{
 	/*declare game object variables*/
 	// the game board 
 	private Board board;
-	 	 
-	//TODO: create the enumeration for the variable below (GameState currentState)
-	//HINT all of the states you require are shown in the code within GameMain
+	
 	private GameState currentState; 
 	
 	// the current player
@@ -74,15 +76,15 @@ public class GameMain extends JPanel implements MouseListener{
 						public void run() {
 						
 								
-								JFrame frame = new JFrame("Tic Tac Toe");//set the rest of the stuff
+								JFrame frame = new JFrame(TITLE);//set the rest of the stuff
+								GameMain gameMain = new GameMain();//https://www.youtube.com/watch?v=4YhrmAGpVtI and https://www.youtube.com/javacodejunkie
+								frame.add(gameMain); //it has the extended panel dont have to declare
+								
 								frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 								frame.pack();//call before making jframe visiable and setSize  //https://stackoverflow.com/questions/8193801/how-to-set-specific-window-frame-size-in-java-swing
 								frame.setSize(315, 364);
 								frame.setLocationRelativeTo(null); // place in centre of window
 								frame.setResizable(false);
-								
-								GameMain gameMain = new GameMain();//https://www.youtube.com/watch?v=4YhrmAGpVtI and https://www.youtube.com/javacodejunkie
-								frame.add(gameMain); //it has the extended panel dont have to declare
 								frame.setVisible(true);
 						}
 				});
@@ -111,43 +113,37 @@ public class GameMain extends JPanel implements MouseListener{
 				if (currentState == GameState.Playing) {          
 						statusBar.setForeground(Color.BLACK); 
 						if (currentPlayer == Player.Cross) {   //set players-turn message in status bar
-								statusBar.setForeground(Color.GRAY);
+							
 								statusBar.setText("'X's Turn");					
-						} else 
-						if (currentPlayer == Player.Nought) {
-								statusBar.setForeground(Color.GRAY);	
+						} else {
+														
 								statusBar.setText("'O's Turn");
-				} else 
-				if (currentState == GameState.Draw) {          
+						}		
+				} else if (currentState == GameState.Draw) {          
 						statusBar.setForeground(Color.RED);          
-						statusBar.setText("It's a Draw! Click to play again.");       
-				} else 
-				if (currentState == GameState.Cross_won) {          
+						statusBar.setText("It's a Draw! Click to play again.");  
+						
+				} else if (currentState == GameState.Cross_won) {          
 						statusBar.setForeground(Color.RED);          
-						statusBar.setText("'X' Won! Click to play again.");       
-				} else 
-				if (currentState == GameState.Nought_won) {          
+						statusBar.setText("'X' Won! Click to play again.");   
+						
+				} else if (currentState == GameState.Nought_won) {          
 						statusBar.setForeground(Color.RED);          
 						statusBar.setText("'O' Won! Click to play again.");       
-				}
-				
 				}
 		}		
 		//INITATE GAME triggered by Mouse click.
 		public void initGame() {//1st player initialized as Empty (empty cell contents), 2nd gameState initialized as playing, 3rd player initialized as Cross 
 				
 				//initialize contents in all cells in game board are empty
-				for (int row = 0; row < ROWS; ++row) {//loops through rows
-					
-						for (int col = 0; col < COLS; ++col) {//loops through cols
-							
+				for (int row = 0; row < ROWS; ++row) {//loops through rows					
+						for (int col = 0; col < COLS; ++col) {//loops through cols							
 							//if none of players symbols (content) in all rows and cols(Cells) in the board, then the player = Empty (no players piece is on the board). Game can start.
 							board.cells[row][col].content = Player.Empty;//all cells empty
 						}
 				}
 				//initialize the current Status of the gameState
-				currentState = GameState.Playing;//ready to play
-				
+				currentState = GameState.Playing;//ready to play				
 				//initialize the current player
 				currentPlayer = Player.Cross; //Cross is initialize as the X starts first always and will be the first player
 		}
@@ -157,20 +153,24 @@ public class GameMain extends JPanel implements MouseListener{
 		 * If no winner then isDraw is called to see if deadlock, if not GameState stays as PLAYING
 		 *   
 		 */
-		public void updateGame(Player thePlayer, int playerRow, int playerCol) {
+		public void updateGame(Player thePlayer, int row, int col) {
 			
-			board.cells[playerRow][playerCol].content = currentPlayer;//make the play
-			currentPlayer = thePlayer;
-			if(board.hasWon(thePlayer, playerRow, playerCol)){ //check for win 
+			
+			if(board.hasWon(thePlayer, row, col)){ //check for win 
 						
-				currentState = (thePlayer == Player.Cross) ? GameState.Cross_won : GameState.Nought_won;//Switch state
-			} else 
-				if  (board.isDraw()) {
-						currentState = GameState.Draw;
-						}
-						 //otherwise no change to current state of playing
-						
+				if (currentPlayer == Player.Cross) {
+    				currentState = GameState.Cross_won;
 				}
+				else {
+    				currentState = GameState.Nought_won;
+				}		
+    		
+			} else if (board.isDraw()) {  // check for draw
+				currentState = GameState.Draw;
+			}
+	// Otherwise, no change to current state (still GameState.PLAYING).
+						
+		}
 		public void mouseClicked(MouseEvent e) {  
 		// get the coordinates of where the click event happened            
 				int mouseX = e.getX();             
